@@ -1,24 +1,18 @@
-# cheng-ting
+# 客户资料地图查询系统
 
-## Project setup
+## 技术栈
 ```
-yarn install
-```
+Vue CLI  + Vue2  +  Axios  +  ElementUI  +  JavaScript API GL(百度地图)  +  JavaScript
 
-### Compiles and hot-reloads for development
-```
-yarn serve
 ```
 
-### Compiles and minifies for production
+### 项目描述
 ```
-yarn build
-```
-
-### Lints and fixes files
-```
-yarn lint
+Web 端全国客户资料地图查询系统，实现属性检索、要素查询、热力图显示等功能。
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### 技术说明
+```
+• 实现虚拟列表，并通过节流优化滚动，优化查询性能。
+• 使用百度地图 API 提供的要素聚合功能，提高渲染效率。
+```
