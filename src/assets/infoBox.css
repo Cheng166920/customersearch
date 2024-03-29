@@ -1,0 +1,15 @@
+hr{
+	height:1px;border:none;border-top:1px dashed #3385FF;width:auto;
+}
+.infoBoxContent{overflow: auto;}
+.infoBoxContent .title{background-color: #3385FF;color:#fff;padding:5px;font-size:14px;font-weight: bold;}
+.infoBoxContent .title location{font-size:16px;line-height:30px;padding:6px 18px 6px 5px;white-space: nowrap;}
+.infoBoxContent .title .point{color:#FFFF00;font-size:10px;padding:6px 10px 6px 25px;}
+.infoBoxContent .list1{background:#fff;font-size:13px;padding:8px 10px 0}
+.infoBoxContent .list2{background:#fff;font-size:13px;padding:0px 10px 1px }
+.infoBoxContent .list3{background:#fff;font-size:12px;padding:8px 0px 0}
+.infoBoxContent table{ padding:0px 0px 8px 0px;}
+.infoBoxContent tr td {font-size:12px;padding:0px 10px 0;white-space: nowrap;}
+.infoBoxContent tr td label {font-size:12px;font-weight: 600;white-space: nowrap;}
+.infoBoxContent .title a {padding:6px 10px 6px 120px;font-size:10px;text-decoration:underline;}
+.infoBoxContent .title button {background-color:#3385FF;color:#FFF; position: absolute;right:20px;top:10px; padding:5px;font-size:10px;}
