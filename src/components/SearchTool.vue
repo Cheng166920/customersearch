@@ -54,7 +54,6 @@ export default {
       }
     }
   },
-
   computed: {
     count(){
       return this.targets.length;
