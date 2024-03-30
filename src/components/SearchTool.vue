@@ -4,7 +4,7 @@
     <template #append><el-button icon="Search" @click="searchMarker" plain></el-button>
 	  </template>
   </el-input>
-  <PopContent :count="count" :showPop="showPop" :targets="targets"></PopContent>
+  <PopContent :count="count" :showPop="showPop" :targets="targets" ref="pop"></PopContent>
 </div> 
 </template>
 
@@ -27,7 +27,8 @@ export default {
   },
   methods:{
     forceUpdate(){
-      this.$forceUpdate();
+      // this.$forceUpdate();
+      console.log("forceUpdate");
       this.targets = [];
       this.showPop.isShow = false;
       this.showPop.showNum = false;
@@ -39,7 +40,7 @@ export default {
       if(this.targets.length > 0){
         this.showPop.showNum = true;
         this.showPop.isShow = true;
-      //  this.initCustomerList(this.targets);
+        this.$refs.pop.initCustomerList(this.targets);
       } else {
         this.showPop.showNum = false;
         this.showPop.isShow = false;

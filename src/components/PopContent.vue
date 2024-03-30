@@ -1,6 +1,6 @@
 <template>
 <div id ='pop'>
-    <div v-show ="showPop.isShow" id = "popContent" class = "poplist">
+    <div v-show ="showPop.isShow" class = "poplist" ref="popContent">
     </div>
     <div v-show ="showPop.showNum" class = "popNum">
     <p>共找到<span id="popCount">{{ count }}</span>个搜索结果。</p>
@@ -23,7 +23,6 @@ export default {
             // 定义初始化数据
             page: 1, // 页码
             size: 20, // 每页条数
-            preLoadNum: 3, // 同时展示载页数
             boxHeight: 600, // 容器高度
             listArr: [], // 用于存放列表数据
             nextHeight: 0,
@@ -39,21 +38,16 @@ export default {
             this.listArr = []; // 用于存放列表数据
             this.isGetting = false;
 
-            var pop = document.getElementById("popContent");
+            var pop = this.$refs.popContent;
             // 将滚动位置归位到顶部
-            // pop.scrollTo({
-            //     top: 0,
-            //     behavior: 'smooth' // 使用平滑滚动
-            // });
+            console.log("滚动位置scroll")
+            
             // 初始化时删除所有子元素
             while (pop.hasChildNodes()) {
                 pop.removeChild(pop.firstChild);
                 console.log("remove");
             }
-            // if(targets.length <= size){
-            //     this.createList(targets);
-            //     return;
-            // }
+
             // 初始化第一页
             const {fragment, ul: ulli} = this.createLists(this.page,this.size,targets);
             pop.appendChild(fragment);
@@ -61,9 +55,10 @@ export default {
             setTimeout(()=>{
                 const list = document.querySelector(`.page_${this.page}`);
                 console.log(list.clientHeight);
-                const listHeight = list.clientHeight;
+                const listHeight = list.clientHeight * this.page;
                 this.listArr.push({list, height: listHeight});
                 this.nextHeight = listHeight - this.boxHeight;
+                this.scrollTop();
             },0);
             
             this.searchCustomers = targets;
@@ -90,82 +85,42 @@ export default {
                 return {fragment, ul};
 
         },
+
+        // 滚动事件
         scrollChange(e){
+            if(this.isGetting || this.searchCustomers.length === 0) return;
             const scrollTop = e.target.scrollTop;
-            console.log(scrollTop);
-            var pop = document.getElementById("popContent");
+            console.log(scrollTop, this.nextHeight);
             if(scrollTop >= this.nextHeight){
-                if(this.isGetting) return;
                 this.isGetting = true;
                 this.page++;
-                let fragment;
-                let pushObj;
-                console.log(pushObj);
-                if(this.page * this.size > this.searchCustomers.length){
-                    this.page--;
+                const {fragment, ul: ulli} = this.createLists(this.page,this.size,this.searchCustomers);
+                console.log(ulli);
+                this.$refs.popContent.appendChild(fragment);
+                setTimeout(()=>{
+                    const list = document.querySelector(`.page_${this.page}`);
+                    const listHeight = list.clientHeight;
+                    this.listArr.push({list, height: listHeight});
+                    // 获取this.listArr中所有list的高度之和
+                    const listHeights = this.listArr.reduce((prev, curr) => prev + curr.height, 0);
+                    this.nextHeight = listHeights - this.boxHeight;
                     this.isGetting = false;
-                    return;
-                }
-                if(!this.listArr[this.page - 1]){
-                    const {fragment: element, ul} = this.createLists(this.page, this.size, this.searchCustomers);
-                    fragment = element;
-                    console.log(element);
-                    console.log(ul);
-                    pushObj = {ul};
-                } else {
-                    const {uiList, height} = this.listArr[this.page - 1];
-                    fragment = uiList;
-                    console.log(height);
-                }
-                pop.appendChild(fragment);
-
-                this.nextHeight = pop.clientHeight - this.boxHeight;
-                if(pushObj){
-                    const listHeight = document.querySelector(`.page_${this.page}`).clientHeight;
-                    console.log("需要验证" + listHeight);
-                    pushObj.height = listHeight;
-                    this.listArr.push(pushObj);
-
-                }
-                const hideElem = document.querySelector(`.page_${this.page - this.preLoadNum}`);
-                if(hideElem){
-                    pop.removeChild(hideElem);
-                }
-            }else if(scrollTop <= this.nextHeight - this.listArr[this.listArr.length - 1].height && this.page > this.preLoadNum){
-                this.page--;
-                const { ulli } = this.listArr[this.page - this.preLoadNum];
-                pop.insertBefore(ulli, pop.childNodes[0]);
-
-                const hideElem = document.querySelector(`.page_${this.page + 1}`);
-                if(hideElem){
-                    pop.removeChild(hideElem);
-                this.nextHeight = pop.clientHeight - this.boxHeight;
-                }
-            }
-            this.isGetting = false;
+                },0);
+            } 
         },
-
-           
-    },
-    watch:{
-        'showPop.showNum'(oldValue, newValue){
-            if(oldValue == false && newValue == true){
-                var pop = document.getElementById("popContent");
+         
+        scrollTop(){
             // 将滚动位置归位到顶部
-                pop.scrollTo({
-                    top: 0,
-                    behavior: 'smooth' // 使用平滑滚动
-                });
-            }
-        },
-            
+            this.$refs.popContent.scrollTo({
+                top: 0,
+                behavior: 'smooth' // 使用平滑滚动
+            });
+        }
+ 
     },
  
     updated(){
-        if(this.targets.length > 0){
-            this.initCustomerList(this.targets);
-        }
-        var el = document.getElementById("popContent");
+        var el = this.$refs.popContent;
         if(el) {
             var timeout = null,
             startTime = Date.parse(new Date); // 开始时间
