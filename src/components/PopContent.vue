@@ -15,7 +15,6 @@ export default {
     props: {
         count: Number,
         showPop: Object,
-        targets: Array,
         // searchCustomers: Array
     },
     data(){
@@ -118,7 +117,7 @@ export default {
         }
  
     },
- 
+    
     updated(){
         var el = this.$refs.popContent;
         if(el) {

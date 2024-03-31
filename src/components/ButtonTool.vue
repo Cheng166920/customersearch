@@ -50,6 +50,8 @@ export default {
         setTimeout(()=>{
             console.log("触发热力图显示")
             heatmap.creatHeatmap(this.heatActive);
+           
+            
         },0)
         
       },

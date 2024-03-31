@@ -1,5 +1,5 @@
 <template>
-<BaiduMap :customers = 'customers' :points = 'points'></BaiduMap>
+<BaiduMap></BaiduMap>
 <SearchTool/>
 <ButtonTool/>
 </template>
@@ -8,6 +8,8 @@
 import BaiduMap from './components/BaiduMap.vue'
 import ButtonTool from '@/components/ButtonTool.vue'
 import SearchTool from '@/components/SearchTool.vue'
+import { heatmap } from '@/utils/heatmap.js'
+import { createmarkers } from '@/utils/createmarkers.js'
 import axios from 'axios'
 
 export default {
@@ -23,22 +25,21 @@ export default {
       points: []
     }
   },
-  created(){
-    axios.get('./customers.json')
-    .then( response => {
-        this.customers = response.data;
-        window.console.log(response);
-    }).catch( error => {
-        console.log(error);
-    });
+  async created(){
+    try {
+      const customersRes = await axios.get('./customers.json');
+      this.customers = customersRes.data;
 
-    axios.get('./heatmap.json')
-    .then( response => {
-        this.points = response.data;
-        console.log(response);
-    }).catch( error => {
-        console.log(error);
-    });
+      const pointsRes = await axios.get('./heatmap.json');
+      this.points = pointsRes.data;
+
+      createmarkers.allCustomers = this.customers;
+      heatmap.points = this.points;
+
+    } catch (error) {
+      console.log(error);
+    }
+    
   }
 }
 </script>

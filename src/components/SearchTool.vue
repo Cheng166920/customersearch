@@ -4,13 +4,14 @@
     <template #append><el-button icon="Search" @click="searchMarker" plain></el-button>
 	  </template>
   </el-input>
-  <PopContent :count="count" :showPop="showPop" :targets="targets" ref="pop"></PopContent>
+  <PopContent :count="count" :showPop="showPop" ref="pop"></PopContent>
 </div> 
 </template>
 
 <script>
 import { createmarkers } from '@/utils/createmarkers.js'
 import PopContent from './PopContent.vue'
+
 export default {
   name: 'SearchTool',
   components: {

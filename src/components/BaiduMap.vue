@@ -1,8 +1,6 @@
 <template>
     <div id="map" style= {height:100%;}>
         <div id="allmap" ref="allmap"></div>
-        <!-- <SearchTool/>
-        <ButtonTool/> -->
     </div>
 </template>
 
@@ -12,10 +10,6 @@ import { createmarkers } from '@/utils/createmarkers.js'
 
 export default {
     name: "BaiduMap",
-    props: {
-        customers: Array,
-        points: Array
-    },
     data() {
     return {
         Map:'',
@@ -33,7 +27,6 @@ export default {
             map.enableScrollWheelZoom(true); // 开启鼠标滚轮缩放
             map.enableDragging(); // 开启拖拽
             
-
         },
         initMapHeight() {
             var main = document.getElementById("map");
@@ -44,18 +37,9 @@ export default {
     mounted() {
         this.initMapHeight();
         this.map();
-    },
-    updated() {
-        if(this.customers.length > 0) {
-            createmarkers.allCustomers = this.customers;
-            createmarkers.map = this.Map;
-        }
-        if(this.points.length > 0) {
-            heatmap.points = this.points;
-            heatmap.map = this.Map;
-        }
-    },
-    
+        createmarkers.map = this.Map;
+        heatmap.map = this.Map;
+    }, 
 };
 </script>
 
